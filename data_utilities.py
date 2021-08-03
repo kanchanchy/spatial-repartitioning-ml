@@ -112,7 +112,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/taxi_trip/part_36000/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/nyc_multivariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -182,7 +182,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 	pickupInfoDf.createOrReplaceTempView("pickupInfoDf")
 	pickupInfoDf.show(5, False)
 
-	pickupInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/taxi_trip/part_36000/pickup_info_df")
+	#pickupInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/nyc_multivariate_data/nyc_trip_info_multi_df")
 	print("Completed generating dataframe consisting of pickup information of selected attributes")
 
 
@@ -227,7 +227,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 				tripInfo[int(_id/num_cols)][_id%num_cols] = tripInfo[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_tripInfo = open("data/taxi_trip/tripInfo.npy", "wb")
+	file_tripInfo = open("data/processed_data/nyc_multivariate_data/nyc_multivariate_grid.npy", "wb")
 	np.save(file_tripInfo, tripInfo)
 	print("Completed generating multivariate grid dataset")
 
@@ -241,7 +241,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], tripInfo[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/taxi_trip/part_36000/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/nyc_multivariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
@@ -256,7 +256,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/taxi_trip/part_36000/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/nyc_univariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -326,7 +326,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 	pickupInfoDf.createOrReplaceTempView("pickupInfoDf")
 	pickupInfoDf.show(5, False)
 
-	pickupInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/taxi_trip/part_36000/pickup_info_df")
+	#pickupInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/nyc_univariate_data/nyc_trip_info_uni_df")
 	print("Completed generating dataframe consisting of pickup information of selected attributes")
 
 
@@ -368,7 +368,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 				pickup_counts[int(_id/num_cols)][_id%num_cols] = pickup_counts[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_pickup_count = open("data/taxi_trip/part_36000/single_attribute/np_arrays/pickup_counts.npy", "wb")
+	file_pickup_count = open("data/processed_data/nyc_univariate_data/nyc_univariate_grid.npy", "wb")
 	np.save(file_pickup_count, pickup_counts)
 	print("Completed generating univariate grid dataset")
 
@@ -382,7 +382,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], pickup_counts[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/taxi_trip/part_36000/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/nyc_univariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
@@ -390,7 +390,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 
 def process_wa_multivariate_data(lat_interval, lon_interval):
 	# Loading shape file containing spatial information
-	gdf = load_dataset("data/wa_house/kc_house.shp", True)
+	gdf = load_dataset("data/wa_house/home_zones/kc_house.shp", True)
 	gdf = gdf.to_crs('epsg:2263')
 	print("Shape file loaded")
 
@@ -398,7 +398,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/wa_house/part_40000/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/wa_multivariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -461,7 +461,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 	houseInfoDf.createOrReplaceTempView("houseInfoDf")
 	houseInfoDf.show(5, False)
 
-	houseInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/wa_house/part_40000/house_info_df")
+	#houseInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/wa_multivariate_data/wa_house_info_df")
 	print("Completed generating dataframe consisting of house sales information of selected attributes")
 
 
@@ -504,7 +504,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 				houseInfo[int(_id/num_cols)][_id%num_cols] = houseInfo[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_houseInfo = open("data/wa_house/part_40000/np_arrays/houseInfo.npy", "wb")
+	file_houseInfo = open("data/processed_data/wa_multivariate_data/wa_multivariate_grid.npy", "wb")
 	np.save(file_houseInfo, houseInfo)
 	print("Completed generating multivariate grid dataset")
 
@@ -518,7 +518,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], houseInfo[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/wa_house/part_40000/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/wa_multivariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
@@ -551,7 +551,7 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 	#num_rows, num_cols, grid_geom_list = partition_by_grid_nonshape_file(lat_min, lat_max, lon_min, lon_max, -264, 480)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/chicago_cars/part_36000/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/chicago_univariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -604,7 +604,7 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 	carsInfoDf.createOrReplaceTempView("carsInfoDf")
 	carsInfoDf.show(5, False)
 
-	carsInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/chicago_cars/part_36000/cars_info_df")
+	#carsInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/chicago_univariate_data/chicago_cars_info_df")
 	print("Completed generating dataframe consisting of cars information of selected attributes")
 
 
@@ -646,7 +646,7 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 				cars_counts[int(_id/num_cols)][_id%num_cols] = cars_counts[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_cars_count = open("data/chicago_cars/part_36000/np_arrays/car_counts.npy", "wb")
+	file_cars_count = open("data/processed_data/chicago_univariate_data/chicago_univariate_grid.npy", "wb")
 	np.save(file_cars_count, cars_counts)
 	print("Completed generating univariate grid dataset")
 
@@ -660,6 +660,6 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], cars_counts[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/chicago_cars/part_36000/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/chicago_univariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
