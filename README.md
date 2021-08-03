@@ -1,4 +1,13 @@
 # Machine Learning Aware Spatial Data Re-partitioning
+This repository contains codes for the paper 'A Machine Learning-Aware Data Re-partitioning Framework for Spatial Datasets'. This framework aims at reducing the training time and memory usage of a spatial machine learning model by reducing the number of partitions in a spatial grid dataset. Four types of datasets are used for experiments:
+
+1. NYC Taxi Trip Multivariate Dataset
+
+2. NYC Taxi Trip Univariate Dataset
+
+3. Washington King County Home Sales Multivariate Dataset
+
+4. Chicago Abandoned Cars Univariate Dataset
 
 ## Downloading Dataset
 In order to experiment with NYC taxi trip dataset, download the 'Yellow Taxi Trip Records' for January 2009 from the site: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page. Put the downloaded CSV file inside this folder 'data/taxi_trip'. The file name should be 'yellow_tripdata_2009-01.csv'. Other datasets are available under 'data' folder.
