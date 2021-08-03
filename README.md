@@ -7,4 +7,7 @@ In order to experiment with NYC taxi trip dataset, download the 'Yellow Taxi Tri
 Run data_preprocessing.py file. Main method contains four method calls for four datasets. In order to perform preprocessing on only one dataset, comment method calls for other datasets.
 
 ## Spatial Data Re-partitioning
-Run repartitioning.py file. Main method contains re-partitioning steps for all four datasets. In order to perform re-partitioning on only one dataset, comment repartitioning steps for other datasets.
+Run repartitioning.py file. Main method contains re-partitioning steps for all four datasets. In order to perform re-partitioning on only one dataset, comment repartitioning steps for other datasets. In order to experiment different threshold of information loss, change the value of the variable infoLossThreshold_NYC_Multi .
+
+## Training and Testing Machine Learning Models
+Run train_test_models.py file. Sevel methods perform training and testing on seven types of machine learning models. In order to perform training and testing on only one model, comment method calls for other machine learning models. Regression models are tested with NYC taxi trip multivariate dataset (paths are defined by first set of global variables). Spatial kriging and clustering are performed on NYC taxi trip univariate dataset (paths are defined by second set of global variables). Change the paths to different dataset in order to perform training and testing on different dataset.
