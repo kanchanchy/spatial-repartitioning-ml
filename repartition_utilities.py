@@ -294,7 +294,7 @@ def callRepartitioning(grid_data, attr_data_types, infoLossThreshold, outputPath
     group_centroid_data = np.array(group_centroid_data)
 
     # Saving group centroids into files
-    file_group_centroid_data = open("data/taxi_trip/part_36000/single_attribute/np_arrays/loss_0.15/group_centroid_data.npy", "wb")
+    file_group_centroid_data = open(outputPath + "/group_centroid_data.npy", "wb")
     np.save(file_group_centroid_data, group_centroid_data)
     print("Cell-groups centroids calculation completed")
 
