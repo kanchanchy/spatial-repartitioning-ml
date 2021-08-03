@@ -3,10 +3,10 @@ from data_utilities import *
 
 def main():
 	# Preprocess NYC taxi trip multivariate dataset
-	process_nyc_multivariate_data(5000, 5000) # arguments represent intervals for latitude and longitude respectively in the grid
+	process_nyc_multivariate_data(800, 800) # arguments represent intervals for latitude and longitude respectively in the grid
 
 	# Preprocess NYC taxi trip univariate dataset
-	process_nyc_univariate_data(5000, 5000) # arguments represent intervals for latitude and longitude respectively in the grid
+	process_nyc_univariate_data(800, 800) # arguments represent intervals for latitude and longitude respectively in the grid
 
 	# Preprocess Washington King county home sales multivariate dataset
 	process_wa_multivariate_data(1616, 1616) # arguments represent intervals for latitude and longitude respectively in the grid
