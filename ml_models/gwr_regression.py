@@ -3,33 +3,16 @@ from model_utilities import *
 import os
 import psutil
 import resource
-import geopandas as gpd
-from shapely import wkt
-from pysal.model import spreg
-from pysal.lib import weights
-from pysal.explore import esda
-import libpysal
-import spreg
 from mgwr.gwr import GWR
 from mgwr.sel_bw import Sel_BW
-from libpysal.examples import load_example
-from libpysal.weights import Queen, W
 from scipy import stats
 import statsmodels.formula.api as sm
 import numpy as np
 import pandas as pd
-import geopandas
-import matplotlib.pyplot as plt
-import seaborn
 import math
 import time
 import random
-from pyinterpolate.io_ops import read_point_data
-from pyinterpolate.semivariance import calculate_semivariance  # experimental semivariogram
-from pyinterpolate.semivariance import TheoreticalSemivariogram  # theoretical models
-from pyinterpolate.kriging import Krige  # kriging models
-from sklearn.metrics import r2_score,mean_squared_error
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_squared_error
 
 
 def gwrRegressionWithOriginalData(path_data_array, path_centroid_array, outputColumnIndex):
@@ -96,7 +79,7 @@ def gwrRegressionWithRepartitionedData(path_group_data, path_group_centroid_arra
     y_data = y_data.reshape((len(y_data), 1))
     x_data = np.delete(cell_group_feature, outputColumnIndex, 1)  # second argument for column number, third arguument for column delete
 
-    coords_train, coords_test, x_train, x_test, y_train, y_test = split_train_test_gwr(centroid_x, centroid_y, y_data, y_data, 0.2)
+    coords_train, coords_test, x_train, x_test, y_train, y_test = split_train_test_gwr(centroid_x, centroid_y, x_data, y_data, 0.2)
 
     ts_start = time.time()
     bw_optimum = Sel_BW(coords_train, y_train, x_train, kernel='gaussian', fixed = False).search(criterion='AICc')

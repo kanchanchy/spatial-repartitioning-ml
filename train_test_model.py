@@ -6,10 +6,12 @@ from ml_models.svm_regression import *
 from ml_models.rf_regression import *
 from ml_models.spatial_kriging import *
 from ml_models.spatial_clustering import *
+from ml_models.gb_classification import *
+from ml_models.knn_classification import *
 
 
 # Regression using NYC taxi trip multivariate dataset
-outputColumnIndex = 3  # will be 0 for wa home sales dataset
+outputColumnIndex = 3  # will be 0 for wa home sales dataset and 4 for nyc earning dataset
 path_data_array = "data/processed_data/nyc_multivariate_data/nyc_multivariate_grid.npy"
 path_centroid_array = "data/processed_data/nyc_multivariate_data/centroid_data.npy"
 path_group_index = "data/repartitioned_data/nyc_multivariate_data/cell_group_ind.npy"
@@ -70,6 +72,18 @@ def test_spatial_clustering():
     # Train and test spatial clustering with repartitioned data
     clusteringWithRepartitionedData(path_data_array_univariate, path_group_index_univariate, path_cell_index_univariate, path_group_data_univariate, path_polygon_groups_univariate)
 
+def train_test_gb_classification():
+    # Train and test spatial gradient boosting classification with original data
+    gbClassificationWithOriginalData(path_data_array, outputColumnIndex)
+    # Train and test spatial gradient boosting classification with repartitioned data
+    gbClassificationWithRepartitionedData(path_data_array, path_group_data, outputColumnIndex)
+
+def train_test_knn_classification():
+    # Train and test spatial k-nearest neighbor classification with original data
+    knnClassificationWithOriginalData(path_data_array, outputColumnIndex)
+    # Train and test spatial k-nearest neighbor classification with repartitioned data
+    knnClassificationWithRepartitionedData(path_data_array, path_group_data, outputColumnIndex)
+
 
 def main():
     train_test_lag_regression()
@@ -77,6 +91,8 @@ def main():
     train_test_gwr_regression()
     train_test_svm_regression()
     train_test_rf_regression()
+    train_test_gb_classification()
+    train_test_knn_classification()
     train_test_spatial_kriging()
     test_spatial_clustering()
 

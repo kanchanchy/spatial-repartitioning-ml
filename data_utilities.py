@@ -103,7 +103,7 @@ def partition_by_grid_nonshape_file(xmin, xmax, ymin, ymax, x_interval, y_interv
 
 
 
-def process_nyc_multivariate_data(lat_interval, lon_interval):
+def process_taxi_trip_multivariate_data(lat_interval, lon_interval):
 	# Loading shape file containing spatial information
 	gdf = load_dataset("data/taxi_trip/taxi_zones/taxi_zones.shp", True)
 	print("Shape file loaded")
@@ -112,7 +112,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/processed_data/nyc_multivariate_data/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/taxi_trip_multivariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -227,7 +227,7 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 				tripInfo[int(_id/num_cols)][_id%num_cols] = tripInfo[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_tripInfo = open("data/processed_data/nyc_multivariate_data/nyc_multivariate_grid.npy", "wb")
+	file_tripInfo = open("data/processed_data/taxi_trip_multivariate_data/taxi_trip_multivariate_grid.npy", "wb")
 	np.save(file_tripInfo, tripInfo)
 	print("Completed generating multivariate grid dataset")
 
@@ -241,13 +241,13 @@ def process_nyc_multivariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], tripInfo[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/processed_data/nyc_multivariate_data/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/taxi_trip_multivariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
 
 
-def process_nyc_univariate_data(lat_interval, lon_interval):
+def process_taxi_trip_univariate_data(lat_interval, lon_interval):
 	# Loading shape file containing spatial information
 	gdf = load_dataset("data/taxi_trip/taxi_zones/taxi_zones.shp", True)
 	print("Shape file loaded")
@@ -256,7 +256,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/processed_data/nyc_univariate_data/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/taxi_trip_univariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -368,7 +368,7 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 				pickup_counts[int(_id/num_cols)][_id%num_cols] = pickup_counts[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_pickup_count = open("data/processed_data/nyc_univariate_data/nyc_univariate_grid.npy", "wb")
+	file_pickup_count = open("data/processed_data/taxi_trip_univariate_data/taxi_trip_univariate_grid.npy", "wb")
 	np.save(file_pickup_count, pickup_counts)
 	print("Completed generating univariate grid dataset")
 
@@ -382,15 +382,15 @@ def process_nyc_univariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], pickup_counts[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/processed_data/nyc_univariate_data/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/taxi_trip_univariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
 
 
-def process_wa_multivariate_data(lat_interval, lon_interval):
+def process_home_sales_multivariate_data(lat_interval, lon_interval):
 	# Loading shape file containing spatial information
-	gdf = load_dataset("data/wa_house/home_zones/kc_house.shp", True)
+	gdf = load_dataset("data/home_sales/home_zones/kc_house.shp", True)
 	gdf = gdf.to_crs('epsg:2263')
 	print("Shape file loaded")
 
@@ -398,7 +398,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/processed_data/wa_multivariate_data/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/home_sales_multivariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -428,7 +428,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 
 
 	# Loading CSV dataset
-	houseDf = spark.read.format("csv").option("delimiter",",").option("header","true").load("data/wa_house/kc_house_data.csv")
+	houseDf = spark.read.format("csv").option("delimiter",",").option("header","true").load("data/home_sales/kc_house_data.csv")
 	houseDf = houseDf.withColumn("Serial_ID", monotonically_increasing_id())
 	houseDf.createOrReplaceTempView("houseDf")
 	houseDf.show(5, False)
@@ -504,7 +504,7 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 				houseInfo[int(_id/num_cols)][_id%num_cols] = houseInfo[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_houseInfo = open("data/processed_data/wa_multivariate_data/wa_multivariate_grid.npy", "wb")
+	file_houseInfo = open("data/processed_data/home_sales_multivariate_data/home_sales_multivariate_grid.npy", "wb")
 	np.save(file_houseInfo, houseInfo)
 	print("Completed generating multivariate grid dataset")
 
@@ -518,15 +518,15 @@ def process_wa_multivariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], houseInfo[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/processed_data/wa_multivariate_data/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/home_sales_multivariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")
 
 
 
-def process_chicago_univariate_data(lat_interval, lon_interval):
+def process_vehicles_univariate_data(lat_interval, lon_interval):
 	# Loading CSV dataset
-	carsDf = spark.read.format("csv").option("delimiter",",").option("header","true").load("data/chicago_cars/abandoned_cars.csv")
+	carsDf = spark.read.format("csv").option("delimiter",",").option("header","true").load("data/chicago_vehicles/abandoned_cars.csv")
 	carsDf = carsDf.dropna(subset=['Latitude'])
 	carsDf = carsDf.dropna(subset=['Longitude'])
 	carsDf = carsDf.withColumn("Serial_ID", monotonically_increasing_id())
@@ -551,7 +551,7 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 	#num_rows, num_cols, grid_geom_list = partition_by_grid_nonshape_file(lat_min, lat_max, lon_min, lon_max, -264, 480)
 
 	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
-	polyListDf.to_csv("data/processed_data/chicago_univariate_data/polygon_cells.csv")
+	polyListDf.to_csv("data/processed_data/vehicles_univariate_data/polygon_cells.csv")
 	print("Grid partitions are created")
 
 	# Defining schema of polygons
@@ -646,7 +646,7 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 				cars_counts[int(_id/num_cols)][_id%num_cols] = cars_counts[int(selected_id/num_cols)][selected_id%num_cols]
 				full_ids.append(_id)
 
-	file_cars_count = open("data/processed_data/chicago_univariate_data/chicago_univariate_grid.npy", "wb")
+	file_cars_count = open("data/processed_data/vehicles_univariate_data/vehicles_univariate_grid.npy", "wb")
 	np.save(file_cars_count, cars_counts)
 	print("Completed generating univariate grid dataset")
 
@@ -660,6 +660,334 @@ def process_chicago_univariate_data(lat_interval, lon_interval):
 		centroid_data.append([centroids_list[k][0], centroids_list[k][1], cars_counts[int(k/num_cols)][k % num_cols][0]])
 	centroid_data = np.array(centroid_data)
 
-	file_centroid_data = open("data/processed_data/chicago_univariate_data/centroid_data.npy", "wb")
+	file_centroid_data = open("data/processed_data/vehicles_univariate_data/centroid_data.npy", "wb")
+	np.save(file_centroid_data, centroid_data)
+	print("Completed calculating centroids of grid cells")
+
+
+
+def process_earning_multivariate_data(lat_interval, lon_interval):
+	# Loading shape file containing spatial information
+	gdf = load_dataset("data/nyc_earning/shape_file/NYC Area2010_2data.shp", True)
+	print("Shape file loaded")
+
+	# Creating grid partitions
+	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
+
+	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
+	polyListDf.to_csv("data/processed_data/earning_multivariate_data/polygon_cells.csv")
+	print("Grid partitions are created")
+
+	# Defining schema of polygons
+	schema = StructType(
+		[
+		StructField("_id", IntegerType(), False),
+		StructField("geom", GeometryType(), False)
+		]
+		)
+
+	# Creating list of polygons
+	poly_data = []
+	for i in range(len(grid_geom_list)):
+		poly_data.append([i, grid_geom_list[i]])
+
+	# Creating dataframes of polygons
+	polyDf = spark.createDataFrame(poly_data, schema)
+	polyDf.show(5, False)
+	print("Polygon dataframe created")
+
+	# Converting polygon dataframes into polygon RDDs
+	polyRDD = Adapter.toSpatialRdd(polyDf, "geom")
+	polyRDD.analyze()
+	polyRDD.spatialPartitioning(GridType.KDBTREE, 4)
+	print("Polygon dataframe converted into polygon RDD")
+
+
+	# Preaparing earning attributes for multivariate data
+	gdf['CE01'] = gdf['CE01_02'] + gdf['CE01_03'] + gdf['CE01_04'] + gdf['CE01_05'] + gdf['CE01_06'] + gdf['CE01_07'] + gdf['CE01_08'] + gdf['CE01_09'] + gdf['CE01_10'] + gdf['CE01_11'] + gdf['CE01_12'] + gdf['CE01_13'] + gdf['CE01_14']
+	gdf['CE02'] = gdf['CE02_02'] + gdf['CE02_03'] + gdf['CE02_04'] + gdf['CE02_05'] + gdf['CE02_06'] + gdf['CE02_07'] + gdf['CE02_08'] + gdf['CE02_09'] + gdf['CE02_10'] + gdf['CE02_11'] + gdf['CE02_12'] + gdf['CE02_13'] + gdf['CE02_14']
+	gdf['CE03'] = gdf['CE03_02'] + gdf['CE03_03'] + gdf['CE03_04'] + gdf['CE03_05'] + gdf['CE03_06'] + gdf['CE03_07'] + gdf['CE03_08'] + gdf['CE03_09'] + gdf['CE03_10'] + gdf['CE03_11'] + gdf['CE03_12'] + gdf['CE03_13'] + gdf['CE03_14']
+
+	land_area = gdf['ALAND10'].tolist()
+	water_area = gdf['AWATER10'].tolist()
+	job_1250 = gdf['CE01'].tolist()
+	job_3333 = gdf['CE02'].tolist()
+	job_3333_up = gdf['CE03'].tolist()
+	blocks_geom = gdf['geometry'].tolist()
+
+	schema_earning = StructType(
+		[
+		StructField("serial_id", IntegerType(), False),
+        StructField("land_area", IntegerType(), False),
+        StructField("water_area", IntegerType(), False),
+        StructField("job_1250", IntegerType(), False),
+        StructField("job_3333", IntegerType(), False),
+        StructField("job_3333_up", IntegerType(), False),
+        StructField("geometry", GeometryType(), False)
+        ]
+    )
+
+    earning_data = []
+    for i in range(len(blocks_geom)):
+    	earning_data.append([i, land_area[i], water_area[i], job_1250[i], job_3333[i], job_3333_up[i], blocks_geom[i]])
+    print("Prepared earning attributes for multivariate data")
+
+    earningDf = spark.createDataFrame(earning_data, schema_earning)
+    earningDf.createOrReplaceTempView("earningDf")
+    earningDf.show(5, False)
+	print("Earning multivariate dataframe created")
+
+	# converting earning dataframe into RDD
+	earningRDD = Adapter.toSpatialRdd(earningDf, "geometry")
+	earningRDD.analyze()
+	earningRDD.spatialPartitioning(GridType.KDBTREE, 4)
+	print("earning dataframe has been converted to RDD")
+
+
+	# Generating dataframe consisting of earning information of selected attributes
+	buildOnSpatialPartitionedRDD = True
+	usingIndex = True
+	considerBoundaryIntersection = True
+
+	earningRDD.analyze()
+	earningRDD.spatialPartitioning(polyRDD.getPartitioner())
+	earningRDD.buildIndex(IndexType.QUADTREE, buildOnSpatialPartitionedRDD)
+	result_pair_rdd = JoinQueryRaw.SpatialJoinQueryFlat(earningRDD, polyRDD, usingIndex, considerBoundaryIntersection)
+	earningInfoDf = Adapter.toDf(result_pair_rdd, polyRDD.fieldNames, earningRDD.fieldNames, spark)
+	earningInfoDf.createOrReplaceTempView("earningInfoDf")
+
+	earningInfoDf = spark.sql("SELECT int(a._id) as _id, avg(a.land_area) as land_area, avg(a.water_area) as water_area, avg(a.job_1250) as job_1250, avg(a.job_3333) as job_3333, avg(a.job_3333_up) as job_3333_up FROM earningInfoDf a group by a._id order by a._id asc")
+
+	earningInfoDf.createOrReplaceTempView("earningInfoDf")
+	earningInfoDf.show(5, False)
+
+	#earningInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/earning_multivariate_data/nyc_earning_info_df")
+	print("Completed generating dataframe consisting of earning information of selected attributes")
+
+
+	# Generating multivariate grid dataset
+	num_attrs = 5
+	earning_multi = np.zeros(shape = (num_rows, num_cols, num_attrs))
+	earningInfo = earningInfoDf.collect()
+	ids = []
+	for k in range(len(earningInfo)):
+		_id = earningInfo[k][0]
+		earning_multi[int(_id/num_cols)][_id%num_cols][0] = float(earningInfo[k][1])
+		earning_multi[int(_id/num_cols)][_id%num_cols][1] = float(earningInfo[k][2])
+		earning_multi[int(_id/num_cols)][_id%num_cols][2] = float(earningInfo[k][3])
+		earning_multi[int(_id/num_cols)][_id%num_cols][3] = float(earningInfo[k][4])
+		earning_multi[int(_id/num_cols)][_id%num_cols][4] = float(earningInfo[k][5])
+		ids.append(_id)
+
+	full_ids = ids.copy()
+	priority_length = int(len(ids)/5)
+	for _id in range(num_rows*num_cols):
+		if _id not in ids:
+			choice = random.randint(0, 20)
+			if choice == 0:
+				earning_multi[int(_id/num_cols)][_id%num_cols] = [0, 0, 0, 0, 0]
+				continue
+
+			i = int(_id/num_cols)
+			j = _id%num_cols
+
+			neighbors = []
+			if (i - 1) >= 0 and (i - 1) * num_cols + j in full_ids:
+				neighbors.append((i - 1) * num_cols + j)
+			if (i + 1) < num_rows and (i + 1) * num_cols + j in full_ids:
+				neighbors.append((i + 1) * num_cols + j)
+			if (j - 1) >= 0 and i * num_cols + (j - 1) in full_ids:
+				neighbors.append(i * num_cols + (j - 1))
+			if (j + 1) < num_cols and i * num_cols + (j + 1) in full_ids:
+				neighbors.append(i * num_cols + (j + 1))
+
+			new_ids = ids.copy()
+			for m in range(priority_length):
+				for k in range(len(neighbors)):
+					new_ids.append(neighbors[k])
+
+			random.shuffle(new_ids)
+			selected_id = random.choice(new_ids)
+			if selected_id != -1:
+				earning_multi[int(_id/num_cols)][_id%num_cols] = earning_multi[int(selected_id/num_cols)][selected_id%num_cols]
+				full_ids.append(_id)
+
+	file_earning_multi = open("data/processed_data/earning_multivariate_data/earning_multivariate_grid.npy", "wb")
+	np.save(file_earning_multi, earning_multi)
+	print("Completed generating multivariate grid dataset")
+
+
+	# Calculating centroids of grid cells
+	poly_centroids = list(map(lambda x: x.centroid, grid_geom_list))
+	centroids_list = list(map(lambda center_point: [center_point.x, center_point.y], poly_centroids))
+
+	centroid_data =  []
+	for k in range(len(centroids_list)):
+		centroid_data.append([centroids_list[k][0], centroids_list[k][1], earning_multi[int(k/num_cols)][k % num_cols][0]])
+	centroid_data = np.array(centroid_data)
+
+	file_centroid_data = open("data/processed_data/earning_multivariate_data/centroid_data.npy", "wb")
+	np.save(file_centroid_data, centroid_data)
+	print("Completed calculating centroids of grid cells")
+
+
+
+def process_earning_univariate_data(lat_interval, lon_interval):
+	# Loading shape file containing spatial information
+	gdf = load_dataset("data/nyc_earning/shape_file/NYC Area2010_2data.shp", True)
+	print("Shape file loaded")
+
+	# Creating grid partitions
+	num_rows, num_cols, grid_geom_list = partition_by_grid(gdf, lat_interval, lon_interval)
+
+	polyListDf = pd.DataFrame(grid_geom_list, columns=['geom'])
+	polyListDf.to_csv("data/processed_data/earning_univariate_data/polygon_cells.csv")
+	print("Grid partitions are created")
+
+	# Defining schema of polygons
+	schema = StructType(
+		[
+		StructField("_id", IntegerType(), False),
+		StructField("geom", GeometryType(), False)
+		]
+		)
+
+	# Creating list of polygons
+	poly_data = []
+	for i in range(len(grid_geom_list)):
+		poly_data.append([i, grid_geom_list[i]])
+
+	# Creating dataframes of polygons
+	polyDf = spark.createDataFrame(poly_data, schema)
+	polyDf.show(5, False)
+	print("Polygon dataframe created")
+
+	# Converting polygon dataframes into polygon RDDs
+	polyRDD = Adapter.toSpatialRdd(polyDf, "geom")
+	polyRDD.analyze()
+	polyRDD.spatialPartitioning(GridType.KDBTREE, 4)
+	print("Polygon dataframe converted into polygon RDD")
+
+
+	# Preaparing earning attributes
+	gdf['CE01'] = gdf['CE01_02'] + gdf['CE01_03'] + gdf['CE01_04'] + gdf['CE01_05'] + gdf['CE01_06'] + gdf['CE01_07'] + gdf['CE01_08'] + gdf['CE01_09'] + gdf['CE01_10'] + gdf['CE01_11'] + gdf['CE01_12'] + gdf['CE01_13'] + gdf['CE01_14']
+	gdf['CE02'] = gdf['CE02_02'] + gdf['CE02_03'] + gdf['CE02_04'] + gdf['CE02_05'] + gdf['CE02_06'] + gdf['CE02_07'] + gdf['CE02_08'] + gdf['CE02_09'] + gdf['CE02_10'] + gdf['CE02_11'] + gdf['CE02_12'] + gdf['CE02_13'] + gdf['CE02_14']
+	gdf['CE03'] = gdf['CE03_02'] + gdf['CE03_03'] + gdf['CE03_04'] + gdf['CE03_05'] + gdf['CE03_06'] + gdf['CE03_07'] + gdf['CE03_08'] + gdf['CE03_09'] + gdf['CE03_10'] + gdf['CE03_11'] + gdf['CE03_12'] + gdf['CE03_13'] + gdf['CE03_14']
+
+	land_area = gdf['ALAND10'].tolist()
+	water_area = gdf['AWATER10'].tolist()
+	job_1250 = gdf['CE01'].tolist()
+	job_3333 = gdf['CE02'].tolist()
+	job_3333_up = gdf['CE03'].tolist()
+	blocks_geom = gdf['geometry'].tolist()
+
+	schema_earning = StructType(
+		[
+		StructField("serial_id", IntegerType(), False),
+        StructField("land_area", IntegerType(), False),
+        StructField("water_area", IntegerType(), False),
+        StructField("job_1250", IntegerType(), False),
+        StructField("job_3333", IntegerType(), False),
+        StructField("job_3333_up", IntegerType(), False),
+        StructField("geometry", GeometryType(), False)
+        ]
+    )
+
+    earning_data = []
+    for i in range(len(blocks_geom)):
+    	earning_data.append([i, land_area[i], water_area[i], job_1250[i], job_3333[i], job_3333_up[i], blocks_geom[i]])
+    print("Prepared earning attributes")
+
+    earningDf = spark.createDataFrame(earning_data, schema_earning)
+    earningDf.createOrReplaceTempView("earningDf")
+    earningDf.show(5, False)
+	print("Earning dataframe created")
+
+	# converting earning dataframe into RDD
+	earningRDD = Adapter.toSpatialRdd(earningDf, "geometry")
+	earningRDD.analyze()
+	earningRDD.spatialPartitioning(GridType.KDBTREE, 4)
+	print("earning dataframe has been converted to RDD")
+
+
+	# Generating dataframe consisting of earning information of selected attributes
+	buildOnSpatialPartitionedRDD = True
+	usingIndex = True
+	considerBoundaryIntersection = True
+
+	earningRDD.analyze()
+	earningRDD.spatialPartitioning(polyRDD.getPartitioner())
+	earningRDD.buildIndex(IndexType.QUADTREE, buildOnSpatialPartitionedRDD)
+	result_pair_rdd = JoinQueryRaw.SpatialJoinQueryFlat(earningRDD, polyRDD, usingIndex, considerBoundaryIntersection)
+	earningInfoDf = Adapter.toDf(result_pair_rdd, polyRDD.fieldNames, earningRDD.fieldNames, spark)
+	earningInfoDf.createOrReplaceTempView("earningInfoDf")
+
+	earningInfoDf = spark.sql("SELECT int(a._id) as _id, avg(a.land_area) as land_area, avg(a.water_area) as water_area, avg(a.job_1250) as job_1250, avg(a.job_3333) as job_3333, avg(a.job_3333_up) as job_3333_up FROM earningInfoDf a group by a._id order by a._id asc")
+
+	earningInfoDf.createOrReplaceTempView("earningInfoDf")
+	earningInfoDf.show(5, False)
+
+	#earningInfoDf.coalesce(1).write.option("header","true").option("sep",",").mode("overwrite").csv("data/processed_data/earning_multivariate_data/nyc_earning_info_df")
+	print("Completed generating dataframe consisting of earning information of selected attribute")
+
+
+	# Generating multivariate grid dataset
+	num_attrs = 1
+	earning_single = np.zeros(shape = (num_rows, num_cols, num_attrs))
+	earningInfo = earningInfoDf.collect()
+	ids = []
+	for k in range(len(earningInfo)):
+		_id = earningInfo[k][0]
+		earning_single[int(_id/num_cols)][_id%num_cols][0] = float(earningInfo[k][3]) + float(earningInfo[k][4]) + float(earningInfo[k][5])
+		ids.append(_id)
+
+	full_ids = ids.copy()
+	priority_length = int(len(ids)/5)
+	for _id in range(num_rows*num_cols):
+		if _id not in ids:
+			choice = random.randint(0, 20)
+			if choice == 0:
+				earning_single[int(_id/num_cols)][_id%num_cols] = [0, 0, 0, 0, 0]
+				continue
+
+			i = int(_id/num_cols)
+			j = _id%num_cols
+
+			neighbors = []
+			if (i - 1) >= 0 and (i - 1) * num_cols + j in full_ids:
+				neighbors.append((i - 1) * num_cols + j)
+			if (i + 1) < num_rows and (i + 1) * num_cols + j in full_ids:
+				neighbors.append((i + 1) * num_cols + j)
+			if (j - 1) >= 0 and i * num_cols + (j - 1) in full_ids:
+				neighbors.append(i * num_cols + (j - 1))
+			if (j + 1) < num_cols and i * num_cols + (j + 1) in full_ids:
+				neighbors.append(i * num_cols + (j + 1))
+
+			new_ids = ids.copy()
+			for m in range(priority_length):
+				for k in range(len(neighbors)):
+					new_ids.append(neighbors[k])
+
+			random.shuffle(new_ids)
+			selected_id = random.choice(new_ids)
+			if selected_id != -1:
+				earning_single[int(_id/num_cols)][_id%num_cols] = earning_single[int(selected_id/num_cols)][selected_id%num_cols]
+				full_ids.append(_id)
+
+	file_earning_single = open("data/processed_data/earning_univariate_data/earning_univariate_grid.npy", "wb")
+	np.save(file_earning_single, earning_single)
+	print("Completed generating multivariate grid dataset")
+
+
+	# Calculating centroids of grid cells
+	poly_centroids = list(map(lambda x: x.centroid, grid_geom_list))
+	centroids_list = list(map(lambda center_point: [center_point.x, center_point.y], poly_centroids))
+
+	centroid_data =  []
+	for k in range(len(centroids_list)):
+		centroid_data.append([centroids_list[k][0], centroids_list[k][1], earning_single[int(k/num_cols)][k % num_cols][0]])
+	centroid_data = np.array(centroid_data)
+
+	file_centroid_data = open("data/processed_data/earning_univariate_data/centroid_data.npy", "wb")
 	np.save(file_centroid_data, centroid_data)
 	print("Completed calculating centroids of grid cells")

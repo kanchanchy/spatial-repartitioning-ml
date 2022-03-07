@@ -3,34 +3,15 @@ from model_utilities import *
 import os
 import psutil
 import resource
-import geopandas as gpd
-from shapely import wkt
-from pysal.model import spreg
-from pysal.lib import weights
-from pysal.explore import esda
-import libpysal
-import spreg
-from mgwr.gwr import GWR
-from mgwr.sel_bw import Sel_BW
-from libpysal.examples import load_example
-from libpysal.weights import Queen, W
 from scipy import stats
 import statsmodels.formula.api as sm
 import numpy as np
 import pandas as pd
-import geopandas
-import matplotlib.pyplot as plt
-import seaborn
 import math
 import time
 import random
-from pyinterpolate.io_ops import read_point_data
-from pyinterpolate.semivariance import calculate_semivariance  # experimental semivariogram
-from pyinterpolate.semivariance import TheoreticalSemivariogram  # theoretical models
-from pyinterpolate.kriging import Krige  # kriging models
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
-from sklearn.metrics import r2_score,mean_squared_error
+from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.model_selection import train_test_split
 
 

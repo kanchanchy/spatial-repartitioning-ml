@@ -3,33 +3,18 @@ from model_utilities import *
 import os
 import psutil
 import resource
-import geopandas as gpd
-from shapely import wkt
-from pysal.model import spreg
-from pysal.lib import weights
-from pysal.explore import esda
 import libpysal
-import spreg
-from mgwr.gwr import GWR
-from mgwr.sel_bw import Sel_BW
-from libpysal.examples import load_example
 from libpysal.weights import Queen, W
 from scipy import stats
 import statsmodels.formula.api as sm
 import numpy as np
 import pandas as pd
-import geopandas
-import matplotlib.pyplot as plt
-import seaborn
+import geopandas as gpd
+from shapely import wkt
 import math
 import time
 import random
-from pyinterpolate.io_ops import read_point_data
-from pyinterpolate.semivariance import calculate_semivariance  # experimental semivariogram
-from pyinterpolate.semivariance import TheoreticalSemivariogram  # theoretical models
-from pyinterpolate.kriging import Krige  # kriging models
-from sklearn.metrics import r2_score,mean_squared_error
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 from sklearn.cluster import AgglomerativeClustering
 
 
@@ -51,7 +36,8 @@ def clusteringWithOriginalData(path_data_array, path_polygon_cells):
             original_data[i * num_cols + j] = original_data_2d[i][j]
 
     ts_start = time.time()
-    weight_mat = get_weight_from_grid(num_rows, num_cols, total_cell)
+    neighbours, weight_values = get_weight_from_grid(num_rows, num_cols, total_cell)
+    weight_mat = W(neighbours, weight_values)
     np.random.seed(123456)
     schc_model_cell = AgglomerativeClustering(linkage='ward', connectivity=weight_mat.sparse, n_clusters = 6)
     schc_model_cell.fit(original_data)
@@ -95,7 +81,8 @@ def clusteringWithRepartitionedData(path_data_array, path_group_index, path_cell
     cell_group_feature = np.load(file_cell_group_feature)
 
     ts_start = time.time()
-    weight_mat_group = get_weight_from_repartitioned_cell(cell_group_index, cell_index, num_rows, num_cols)
+    neighbours, weight_values = get_weight_from_repartitioned_cell(cell_group_index, cell_index, num_rows, num_cols)
+    weight_mat_group = W(neighbours, weight_values)
     np.random.seed(123456)
     schc_model_group = AgglomerativeClustering(linkage='ward', connectivity=weight_mat_group.sparse, n_clusters = 6)
     schc_model_group.fit(cell_group_feature)

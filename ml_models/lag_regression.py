@@ -3,31 +3,19 @@ from model_utilities import *
 import os
 import psutil
 import resource
-import geopandas as gpd
-from shapely import wkt
 from pysal.model import spreg
 from pysal.lib import weights
 from pysal.explore import esda
 import libpysal
 import spreg
-from mgwr.gwr import GWR
-from mgwr.sel_bw import Sel_BW
-from libpysal.examples import load_example
 from libpysal.weights import Queen, W
 from scipy import stats
 import statsmodels.formula.api as sm
 import numpy as np
 import pandas as pd
-import geopandas
-import matplotlib.pyplot as plt
-import seaborn
 import math
 import time
 import random
-from pyinterpolate.io_ops import read_point_data
-from pyinterpolate.semivariance import calculate_semivariance  # experimental semivariogram
-from pyinterpolate.semivariance import TheoreticalSemivariogram  # theoretical models
-from pyinterpolate.kriging import Krige  # kriging models
 
 
 def lagRegressionWithOriginalData(path_data_array, outputColumnIndex):
@@ -47,7 +35,8 @@ def lagRegressionWithOriginalData(path_data_array, outputColumnIndex):
     x_data = np.delete(original_data, outputColumnIndex, 1)  # second argument for column number, third arguument for column delete
 
     ts_start = time.time()
-    weight_mat = get_weight_from_grid(num_rows, num_cols, total_cell)
+    neighbours, weight_values = get_weight_from_grid(num_rows, num_cols, total_cell)
+    weight_mat = W(neighbours, weight_values)
     model_lag = spreg.ML_Lag(y_data, x_data, w=weight_mat, method='ord')
     print(model_lag.summary)
     ts_end = time.time()
@@ -80,7 +69,8 @@ def lagRegressionWithRepartitionedData(path_data_array, path_group_index, path_c
     x_data = np.delete(cell_group_feature, outputColumnIndex, 1)  # second argument for column number, third arguument for column delete
 
     ts_start = time.time()
-    weight_mat = get_weight_from_repartitioned_cell(cell_group_index, cell_index, num_rows, num_cols)
+    neighbours, weight_values = get_weight_from_repartitioned_cell(cell_group_index, cell_index, num_rows, num_cols)
+    weight_mat_group = W(neighbours, weight_values)
     model_lag = spreg.ML_Lag(y_data, x_data, w=weight_mat, method='ord')
     print(model_lag.summary)
     ts_end = time.time()
