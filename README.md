@@ -1,12 +1,4 @@
 # A Machine Learning Aware Spatial Data Re-partitioning Framework for Spatial Datasets
-### Citing:
-@article{helber2019eurosat,
-  title={Eurosat: A novel dataset and deep learning benchmark for land use and land cover classification},
-  author={Helber, Patrick and Bischke, Benjamin and Dengel, Andreas and Borth, Damian},
-  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},
-  year={2019},
-  publisher={IEEE}
-}
 This repository contains codes for the paper 'A Machine Learning-Aware Data Re-partitioning Framework for Spatial Datasets'. This framework aims at reducing the training time and memory usage of a spatial machine learning model by reducing the number of partitions in a spatial grid dataset. Four types of datasets are used for experiments:
 1. NYC Taxi Trip Multivariate Dataset
 2. NYC Taxi Trip Univariate Dataset
@@ -24,3 +16,19 @@ Run repartitioning.py file. Main method contains re-partitioning steps for all f
 
 ## Training and Testing Machine Learning Models
 Run train_test_models.py file. Sevel methods perform training and testing on seven types of machine learning models. In order to perform training and testing on only one model, comment method calls for other machine learning models. Regression models are tested with NYC taxi trip multivariate dataset (paths are defined by first set of global variables). Spatial kriging and clustering are performed on NYC taxi trip univariate dataset (paths are defined by second set of global variables). Change the paths to different dataset in order to perform training and testing on different dataset.
+
+## Citing the Work:
+@article{helber2019eurosat,
+
+  title={Eurosat: A novel dataset and deep learning benchmark for land use and land cover classification},
+  
+  author={Helber, Patrick and Bischke, Benjamin and Dengel, Andreas and Borth, Damian},
+  
+  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},
+  
+  year={2019},
+  
+  publisher={IEEE}
+  
+}
+
