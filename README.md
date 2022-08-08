@@ -17,7 +17,10 @@ Run repartitioning.py file. Main method contains re-partitioning steps for all f
 ## Training and Testing Machine Learning Models
 Run train_test_models.py file. Sevel methods perform training and testing on seven types of machine learning models. In order to perform training and testing on only one model, comment method calls for other machine learning models. Regression models are tested with NYC taxi trip multivariate dataset (paths are defined by first set of global variables). Spatial kriging and clustering are performed on NYC taxi trip univariate dataset (paths are defined by second set of global variables). Change the paths to different dataset in order to perform training and testing on different dataset.
 
-## BibTex for Citing the Work:
+## Citing the Work:
+K. Chowdhury, V. V. Meduri and M. Sarwat, "A Machine Learning-Aware Data Re-partitioning Framework for Spatial Datasets," 2022 IEEE 38th International Conference on Data Engineering (ICDE), 2022, pp. 2426-2439, doi: 10.1109/ICDE53745.2022.00227.
+
+### BibTex:
 ```
 @INPROCEEDINGS{9835487,
   author={Chowdhury, Kanchan and Meduri, Venkata Vamsikrishna and Sarwat, Mohamed},
